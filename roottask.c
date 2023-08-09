@@ -38,11 +38,15 @@ int main(void)
     int users;
     // Main while loop keeps taking in user input
     while(seL4_True){
-        printf("Hi\n");
-        printf("Please input password and secret\n");
-        scanf(" %d%d", &userp, &users);
-        printf("You inputed userp %d \n", userp);
-        printf("You inputed users %d \n", users);
+        debug_puts("Hi\n");
+        debug_puts("Please input password \n");
+        char *userp;
+        userp = debug_scanf();
+        debug_puts("Please input secret \n");
+        char *users;
+        users = debug_scanf();
+        debug_puts("You inputed userp %d \n", userp);
+        debug_puts("You inputed users %d \n", users);
         if(!CheckForNullSecret(userp, users)){
             // if input has null values, enter again
             continue;
