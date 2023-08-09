@@ -11,3 +11,5 @@ void debug_puts(const char *text);
 
 /* Print an integer */
 void debug_puti(int i);
+
+void debug_scanf();

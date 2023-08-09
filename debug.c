@@ -37,3 +37,8 @@ void debug_puti(int i)
 
     seL4_DebugPutChar('0' + i);
 }
+
+/* Scan a string */
+void debug_scanf(){
+    
+}
