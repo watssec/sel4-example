@@ -39,6 +39,14 @@ void debug_puti(int i)
 }
 
 /* Scan a string */
-void debug_scanf(){
+char* debug_scanf(){
     
+    char temp;
+    char * result;
+    do{
+        temp = seL4_DebugScanf();
+        result += temp;
+    }while(temp!='\n');
+
+    return result;
 }
