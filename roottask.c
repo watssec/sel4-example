@@ -45,8 +45,10 @@ int main(void)
         debug_puts("Please input secret \n");
         char *users;
         users = debug_scanf();
-        debug_puts("You inputed userp %d \n", userp);
-        debug_puts("You inputed users %d \n", users);
+        debug_puts("You inputed userp \n");
+        debug_puts(userp);
+        debug_puts("You inputed users \n");
+        debug_puts(users);
         if(!CheckForNullSecret(userp, users)){
             // if input has null values, enter again
             continue;
