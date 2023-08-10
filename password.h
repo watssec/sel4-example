@@ -1,8 +1,8 @@
 #include <sel4/sel4.h>
 
 typedef struct node{
-    int p;
-    int s;
+    char * p;
+    char * s;
     struct node * next;
 } node_t;
 
