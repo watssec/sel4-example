@@ -15,21 +15,21 @@ int main(void)
     node_t * free_head = alloc_cptr(); 
     node_t * used_head = alloc_cptr();
     
-    free_head -> s = 0;
-    used_head -> s = 0;
+    free_head -> s = NULL;
+    used_head -> s = NULL;
 
-    free_head -> p = 0;
-    free_head -> p = 0;
+    free_head -> p = NULL;
+    free_head -> p = NULL;
 
-    free_head -> next = 0;
+    free_head -> next = NULL;
     used_head -> next = free_head;
     
     node_t * new_temp = free_head;
     // initialize the free list
     for(int i = 0; i < SIZE; i++){
         node_t * new_node = alloc_cptr();
-        new_node -> s = 0;
-        new_node -> p = 0;
+        new_node -> s = NULL;
+        new_node -> p = NULL;
         new_temp -> next = new_node;
         new_temp = new_node;
     }
