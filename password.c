@@ -16,7 +16,7 @@ seL4_Bool PwasFound(node_t * free_head, node_t * temp){
     return seL4_True;
 }
 
-seL4_Bool EndOfUsedListFound (node_t *used_head, node_t *free_head, node_t * temp, int userp, int users){
+seL4_Bool EndOfUsedListFound (node_t *used_head, node_t *free_head, node_t * temp, char * userp, char * users){
 
     // If no more free elements available
     // It is the same as checking if there is still free memory
@@ -36,7 +36,7 @@ seL4_Bool EndOfUsedListFound (node_t *used_head, node_t *free_head, node_t * tem
     return seL4_True;
 }
 
-seL4_Bool CheckForPresenceOfP (node_t *used_head, node_t *free_head, int userp, int users){
+seL4_Bool CheckForPresenceOfP (node_t *used_head, node_t *free_head, char * userp, char * users){
     node_t * temp = used_head;
     node_t * temp_next = temp->next;
     
