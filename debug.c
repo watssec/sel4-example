@@ -41,12 +41,15 @@ void debug_puti(int i)
 /* Scan a string */
 char* debug_scanf(){
     
-    char temp;
-    char * result;
+    seL4_MessageInfo_t temp;
+    char result[256];
+    seL4_CPtr result_ptr  = alloc_cptr();
+    int cnt = 0; 
     do{
-        temp = seL4_DebugScanf();
-        result += temp;
-    }while(temp!='\n');
+        temp = seL4_DebugScanf(result_ptr);
+        result[cnt] = temp.words[0];
+        cnt ++;
+    }while(temp.words!='\n');
 
     return result;
 }

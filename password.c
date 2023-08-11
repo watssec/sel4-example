@@ -1,8 +1,8 @@
-#include"password.h"
-#include <stdio.h>
+#include "password.h"
+
 
 seL4_Bool CheckForNullSecret(char * userp, char * users){
-    if(userp == NULL || users == NULL){
+    if(userp == 0 || users == 0){
         return seL4_False;
     }else{
         return seL4_True;
