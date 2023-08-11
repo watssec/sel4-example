@@ -65,7 +65,7 @@ util_libs_import_libraries()
 
 # Define the executable
 add_executable(example EXCLUDE_FROM_ALL roottask.c rt.c fail.c debug.c c.c cptr.c ut.c)
-target_link_libraries(example PUBLIC sel4_autoconf sel4 sel4runtime)
+target_link_libraries(example PUBLIC sel4_autoconf sel4 sel4runtime muslc)
 
 # Set this image as the rootserver
 include(rootserver)

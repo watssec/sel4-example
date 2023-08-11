@@ -11,6 +11,7 @@
 
 int main(void)
 {
+    /*
     // Set dummy free_hread, used_head
     node_t * free_head = alloc_cptr(); 
     node_t * used_head = alloc_cptr();
@@ -41,7 +42,7 @@ int main(void)
         debug_puts("Hi\n");
         debug_puts("Please input password \n");
         char *userp;
-        userp = debug_scanf();
+        /userp = debug_scanf();
         debug_puts("Please input secret \n");
         char *users;
         users = debug_scanf();
@@ -55,6 +56,8 @@ int main(void)
         }
         // Otherwise check presence of P in the linked list
         CheckForPresenceOfP(used_head, free_head, userp, users);
+        
     }
+    */
     return seL4_False;
 }
