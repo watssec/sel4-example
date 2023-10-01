@@ -44,12 +44,17 @@ char* debug_scanf(){
     seL4_MessageInfo_t temp;
     char result[256];
     seL4_CPtr result_ptr  = alloc_cptr();
+   
+    debug_puts('a');
     int cnt = 0; 
+    /*
     do{
         temp = seL4_DebugScanf(result_ptr);
-        result[cnt] = temp.words[0];
-        cnt ++;
-    }while(temp.words!='\n');
 
+        result[cnt] = result_ptr;
+        cnt ++;
+        debug_puts('a');
+    }while(temp!='\n');
+    */
     return result;
 }

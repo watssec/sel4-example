@@ -6,58 +6,80 @@
 
 #include "password.h"
 #include "debug.h"
+#include "sel4/sel4.h"
 
-#define SIZE 5000
+// init array
+int array[SIZE];
+int free_head = 5;
+int used_head = 6;
 
 int main(void)
 {
-    /*
-    // Set dummy free_hread, used_head
-    node_t * free_head = alloc_cptr(); 
-    node_t * used_head = alloc_cptr();
-    
-    free_head -> s = 0;
-    used_head -> s = 0;
-
-    free_head -> p = 0;
-    free_head -> p = 0;
-
-    free_head -> next = 0;
-    used_head -> next = free_head;
-    
-    node_t * new_temp = free_head;
-    // initialize the free list
-    for(int i = 0; i < SIZE; i++){
-        node_t * new_node = alloc_cptr();
-        new_node -> s = 0;
-        new_node -> p = 0;
-        new_temp -> next = new_node;
-        new_temp = new_node;
+    // initialize the array
+    for (int i =0; i < SIZE; i++){
+        array[i] = 0;
     }
 
-    int userp;
-    int users;
+    
+    int curr_pointer = free_head;
+    int curr_element = free_head;
+   
+    
+    /*
+    Initialize Free List
+    - Loop to initialize
+    */
+    do{
+        // advance to next element
+        curr_element += 3;
+        // advance to the next pointer
+        curr_pointer += 2;
+        array[curr_pointer] = curr_element;
+    
+    }while(curr_element < 5000*3+7);
+
+
+    // Terminate free list, by setting the last next pointer to 0
+    // Here curr_element = 5000*3+7
+    array[curr_element] = 0;
+
+    // Write initial free head, set the free-head to point to the first triple
+    array[free_head] = used_head + 1;
+    
+
+
     // Main while loop keeps taking in user input
     while(seL4_True){
+
         debug_puts("Hi\n");
         debug_puts("Please input password \n");
-        char *userp;
-        /userp = debug_scanf();
+        seL4_Word userp = seL4_DebugScanf();
+        
         debug_puts("Please input secret \n");
-        char *users;
-        users = debug_scanf();
+        seL4_Word users = seL4_DebugScanf();
+        
         debug_puts("You inputed userp \n");
-        debug_puts(userp);
+        seL4_DebugPutChar(userp);
         debug_puts("You inputed users \n");
-        debug_puts(users);
-        if(!CheckForNullSecret(userp, users)){
+        seL4_DebugPutChar(users);
+
+        seL4_Bool result = CheckForNullSecret(userp, users);
+        debug_puts("result \n");
+        seL4_DebugPutChar(result);
+        if(result == seL4_False){
             // if input has null values, enter again
+            debug_puts("No null values please \n");
             continue;
         }
+          
         // Otherwise check presence of P in the linked list
-        CheckForPresenceOfP(used_head, free_head, userp, users);
+        /*
+         For the first variable inserted, array[used_head] is 0.
+        */
+        CheckForPresenceOfP(userp, users);
+        
         
     }
-    */
-    return seL4_False;
+    
+    return seL4_True;
 }
