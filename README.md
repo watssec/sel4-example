@@ -15,3 +15,12 @@ Increase the number of allowed trace to get ride of the prompt:
 Adjust the default limit in `<ISABELLE_HOME>/etc/options`, value `editor_tracing_messages`
 
 [Reference](https://andriusvelykis.github.io/isabelle-eclipse/features/prover-output.html)
+
+## Abstract Spec
+
+There is not so much reference to look up, I mainly used this [course material](https://www.cse.unsw.edu.au/~cs4161/) as a reference.
+
+Several things to pay attention to when writing the abstract specifications:
+
+* \leftarrow assignment is only used with non-monad functions.
+* If a functional specification requires to be in monad type, it cannot directly use other monads.
