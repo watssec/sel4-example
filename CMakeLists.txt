@@ -10,11 +10,12 @@ include(settings.cmake)
 
 project(example C CXX ASM)
 
-find_package(seL4 REQUIRED)
+
 find_package(elfloader-tool REQUIRED)
+find_package(musllibc REQUIRED)
 find_package(sel4runtime REQUIRED)
 find_package(util_libs REQUIRED)
-
+find_package(seL4_libs REQUIRED)
 # Set the roottask CNode size to be large enough for DTB, timer caps, etc
 # Note that this works for the platforms that we have at the moment, and may
 # need to be increased in the future
@@ -29,6 +30,7 @@ elfloader_import_project()
 
 # Set up runtime
 include(environment_flags)
+
 add_default_compilation_options()
 
 find_libgcc_files()
@@ -59,13 +61,17 @@ add_fpu_compilation_options()
 include(check_arch_compiler)
 check_arch_compiler()
 
+musllibc_setup_build_environment_with_sel4runtime()
 sel4_import_libsel4()
-sel4runtime_import_project()
 util_libs_import_libraries()
+sel4_libs_import_libraries()
 
 # Define the executable
 add_executable(example EXCLUDE_FROM_ALL roottask.c password.c rt.c fail.c debug.c c.c cptr.c ut.c)
-target_link_libraries(example PUBLIC sel4_autoconf sel4 sel4runtime)
+target_link_libraries(example PUBLIC sel4_autoconf sel4 sel4runtime 
+utils
+sel4platsupport
+)
 
 # Set this image as the rootserver
 include(rootserver)
@@ -81,3 +87,5 @@ if(SIMULATION)
     endif()
     GenerateSimulateScript()
 endif()
+
+
