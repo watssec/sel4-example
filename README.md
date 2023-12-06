@@ -1,5 +1,22 @@
 # sel4-example
 
+## Run example itself
+
+Due to some setting problems in [qemu](https://wiki.qemu.org/Documentation/Platforms), we use arm to simulate.
+
+```
+# create build dir
+$ mkdir build && cd build
+# ../init-build.sh -DPLATFORM=qemu-arm-virt -DSIMULATION=TRUE
+```
+
+All the available platforms are as follows:
+```
+ Valid platforms are:
+  "allwinnerA20;am335x;apq8064;ariane;bcm2711;bcm2837;exynos4;exynos5;fvp;hifive;hikey;imx6;imx7;imx8mq-evk;imx8mm-evk;maaxboard;odroidc2;odroidc4;omap3;pc99;polarfire;qemu-arm-virt;qemu-riscv-virt;quartz64;rocketchip;rockpro64;spike;tk1;tqma8xqp1gb;tx1;tx2;zynq7000;zynqmp;rocketchip-base;rocketchip-zcu102;sabre;wandq;nitrogen6sx;rpi3;rpi4;exynos5250;exynos5410;exynos5422;am335x-boneblack;am335x-boneblue;am335x-bone;zcu102;ultra96;ultra96v2;x86_64;ia32"
+```
+
+
 ## single_generation
 
 In order for the password manager to be processed by c-parser, I manually removed all the included library.
