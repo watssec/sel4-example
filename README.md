@@ -41,3 +41,23 @@ Several things to pay attention to when writing the abstract specifications:
 
 * \leftarrow assignment is only used with non-monad functions.
 * If a functional specification requires to be in monad type, it cannot directly use other monads.
+
+## Notes
+
+* cpio
+
+  Fix this [damn linker error](https://github.com/seL4/rumprun/blob/0be59c66494209d1d379fea5dbdd09aa23f54934/platform/sel4/entry.c#L54)
+
+```
+usr/lib/gcc-cross/aarch64-linux-gnu/10/../../../../aarch64-linux-gnu/bin/ld: seL4_libs/libsel4utils/libsel4utils.a(process.c.obj): in function `sel4utils_configure_process_custom':
+/host/projects/sel4_libs/libsel4utils/src/process.c:557: undefined reference to `_cpio_archive_end'
+/usr/lib/gcc-cross/aarch64-linux-gnu/10/../../../../aarch64-linux-gnu/bin/ld: /host/projects/sel4_libs/libsel4utils/src/process.c:557: undefined reference to `_cpio_archive_end'
+/usr/lib/gcc-cross/aarch64-linux-gnu/10/../../../../aarch64-linux-gnu/bin/ld: /host/projects/sel4_libs/libsel4utils/src/process.c:557: undefined reference to `_cpio_archive'
+/usr/lib/gcc-cross/aarch64-linux-gnu/10/../../../../aarch64-linux-gnu/bin/ld: /host/projects/sel4_libs/libsel4utils/src/process.c:557: undefined reference to `_cpio_archive'
+/usr/lib/gcc-cross/aarch64-linux-gnu/10/../../../../aarch64-linux-gnu/bin/ld: /host/projects/sel4_libs/libsel4utils/src/process.c:558: undefined reference to `_cpio_archive'
+/usr/lib/gcc-cross/aarch64-linux-gnu/10/../../../../aarch64-linux-gnu/bin/ld: /host/projects/sel4_libs/libsel4utils/src/process.c:558: undefined reference to `_cpio_archive'
+collect2: error: ld returned 1 exit status
+[3/67] Generating kernel_all_pp_prune.c
+ninja: build stopped: subcommand failed.
+
+```
