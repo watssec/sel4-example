@@ -16,6 +16,7 @@ find_package(musllibc REQUIRED)
 find_package(sel4runtime REQUIRED)
 find_package(util_libs REQUIRED)
 find_package(seL4_libs REQUIRED)
+
 # Set the roottask CNode size to be large enough for DTB, timer caps, etc
 # Note that this works for the platforms that we have at the moment, and may
 # need to be increased in the future
@@ -67,11 +68,22 @@ util_libs_import_libraries()
 sel4_libs_import_libraries()
 
 # Define the executable
-add_executable(example EXCLUDE_FROM_ALL roottask.c password.c rt.c fail.c debug.c c.c cptr.c ut.c)
-target_link_libraries(example PUBLIC sel4_autoconf sel4 sel4runtime 
+add_executable(example EXCLUDE_FROM_ALL roottask.c )
+target_link_libraries(example PUBLIC sel4_autoconf sel4 
+muslc
+sel4runtime 
 utils
+sel4utils
+sel4serialserver
+sel4allocman
+sel4simple 
+sel4simple-default
 sel4platsupport
+sel4vka
+sel4vspace
+sel4sync
 )
+
 
 # Set this image as the rootserver
 include(rootserver)
@@ -87,5 +99,6 @@ if(SIMULATION)
     endif()
     GenerateSimulateScript()
 endif()
+
 
 

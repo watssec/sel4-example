@@ -4,82 +4,125 @@
  * SPDX-License-Identifier: BSD-2-Clause
  */
 
-#include "password.h"
-#include "debug.h"
-#include "sel4/sel4.h"
 
+
+#include "sel4/sel4.h"
+/*
+#include "serial_server/parent.h"
+#include <serial_server/client.h>
+
+#include "sel4platsupport/io.h"
+#include "sel4platsupport/bootinfo.h"
+
+#include "allocman/allocman.h"
+#include "allocman/bootstrap.h"
+#include "allocman/vka.h"
+
+#include <vka/vka.h>
+#include "vka/object.h"
+#include <cpio/cpio.h>
+#include "simple/simple.h"
+#include "simple-default/simple-default.h"
+
+#include <sel4utils/stack.h>
+#include <sel4utils/util.h>
+#include <sel4utils/time_server/client.h>
+*/
+
+// char _cpio_archive[1];
+// char _cpio_archive_end[1];
 // init array
+/*
 int array[SIZE];
 int free_head = 5;
 int used_head = 6;
+#define SERSERV_N_CLIENTS (1)
 
+vka_t client_vkas[SERSERV_N_CLIENTS];
+cspacepath_t client_server_ep_cspaths[SERSERV_N_CLIENTS];
+
+// parent vka and vspace
+// Create vspace object
+vka_t parent_vka;
+
+UNUSED static sel4utils_alloc_data_t data;
+vspace_t parent_vspace;
+
+// Create new TCB
+vka_object_t tcb_object = {0};
+int tcb_error;
+
+#define ALLOCATOR_STATIC_POOL_SIZE (BIT(seL4_PageBits) * 10)
+UNUSED static char allocator_mem_pool[ALLOCATOR_STATIC_POOL_SIZE];
+
+// Fix linker error
+
+
+void name_thread(seL4_CPtr tcb, char *name)
+{
+#ifdef SEL4_DEBUG_KERNEL
+    seL4_DebugNameThread(tcb, name);
+#endif
+}
+
+
+
+
+void client_main(void)
+{
+    // use the same vka as parent
+    vka_t client_vka = parent_vka;
+    // use the same my_vspace as parent
+    vspace_t client_vspace = parent_vspace;
+    serial_client_context_t my_conn;
+    // connect!.....
+    int error;
+    error = serial_server_client_connect(client_server_ep_cspaths[0].capPtr,
+    &client_vka,
+    &client_vspace,
+    &my_conn
+    );
+    serial_server_printf(&my_conn, "Hello world from %s.\n", "John Doe");
+}
+*/
 int main(void)
 {
-    // initialize the array
-    for (int i =0; i < SIZE; i++){
-        array[i] = 0;
-    }
-
-    
-    int curr_pointer = free_head;
-    int curr_element = free_head;
-   
-    
     /*
-    Initialize Free List
-    - Loop to initialize
-    */
-    do{
-        // advance to next element
-        curr_element += 3;
-        // advance to the next pointer
-        curr_pointer += 2;
-        array[curr_pointer] = curr_element;
+    simple_t simple;
+    allocman_t *allocman;
+    seL4_BootInfo *info;
     
-    }while(curr_element < 5000*3+7);
-
-
-    // Terminate free list, by setting the last next pointer to 0
-    // Here curr_element = 5000*3+7
-    array[curr_element] = 0;
-
-    // Write initial free head, set the free-head to point to the first triple
-    array[free_head] = used_head + 1;
+    info = platsupport_get_bootinfo();
+    simple_default_init_bootinfo(&simple, info);
     
-
-
-    // Main while loop keeps taking in user input
-    while(seL4_True){
-
-        debug_puts("Hi\n");
-        debug_puts("Please input password \n");
-        seL4_Word userp = seL4_DebugScanf();
-        
-        debug_puts("Please input secret \n");
-        seL4_Word users = seL4_DebugScanf();
-        
-        debug_puts("You inputed userp \n");
-        seL4_DebugPutChar(userp);
-        debug_puts("You inputed users \n");
-        seL4_DebugPutChar(users);
-
-        seL4_Bool result = CheckForNullSecret(userp, users);
-        debug_puts("result \n");
-        seL4_DebugPutChar(result);
-        if(result == seL4_False){
-            // if input has null values, enter again
-            debug_puts("No null values please \n");
-            continue;
-        }
-          
-        // Otherwise check presence of P in the linked list
-        /*
-         For the first variable inserted, array[used_head] is 0.
-        */
-        CheckForPresenceOfP(userp, users);
-        
-        
+    allocman = bootstrap_use_current_simple(&simple, ALLOCATOR_STATIC_POOL_SIZE, allocator_mem_pool);
+    
+    // allocate vka
+    allocman_make_vka(&parent_vka, allocman);
+    tcb_error = vka_alloc_tcb(&parent_vka, &tcb_object);
+    // spawn parent thread
+    int error_spawn;
+    error_spawn = serial_server_parent_spawn_thread(&simple, &parent_vka, &parent_vspace, seL4_MaxPrio -1);
+    
+    int err;
+    int error;
+    
+    // There is actually just one client.. 
+    for (int i = 0; i < SERSERV_N_CLIENTS; i++){
+        // setup client's VKA
+        allocman_make_vka(&client_vkas[i], allocman);
+        // ask the server to Mint badged endpoints to the clients
+        err = serial_server_parent_vka_mint_endpoint(&client_vkas[i],
+         &client_server_ep_cspaths[i]);
+    // CONFIG_WORD_SIZE);
     }
     
-    return seL4_True;
+    // spawn the clients
+    name_thread(tcb_object.cptr, "example: client_main");
+    seL4_UserContext regs = {0};
+    size_t regs_size = sizeof(seL4_UserContext) / sizeof(seL4_Word);
+    // Hopefully by doing this can spawn the client thread.
+    sel4utils_set_instruction_pointer(&regs, (seL4_Word)client_main);
+    */
+    return 1;
 }
